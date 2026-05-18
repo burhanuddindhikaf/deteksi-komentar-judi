@@ -1,0 +1,20 @@
+datasets
+https://www.kaggle.com/datasets/yaemico/deteksi-judi-online
+https://www.kaggle.com/datasets/yaemico/judionline
+
+
+artikel
+https://ejournal.upi.edu/index.php/IJDB/article/view/88641/33425
+
+unicode
+https://github.com/anyascii/anyascii
+
+scraper
+https://github.com/ohn0/youtube-livechat-scraper
+pytchat
+
+precision>recall
+
+label
+0    4868
+1    4307

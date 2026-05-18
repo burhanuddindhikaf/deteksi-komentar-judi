@@ -1,0 +1,15 @@
+anyascii
+google-api-python-client
+google-auth
+google-auth-oauthlib
+joblib
+matplotlib
+nltk
+numpy
+pandas
+pytchat
+Sastrawi
+scikit-learn
+seaborn
+selenium
+tqdm

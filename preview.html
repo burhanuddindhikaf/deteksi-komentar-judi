@@ -1,0 +1,705 @@
+<!DOCTYPE html>
+<html lang="id" class="h-full">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Deteksi Judi Online – Moderasi Live Chat</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+    <style>
+      html,
+      body {
+        font-family: "Inter", system-ui, -apple-system, Segoe UI, Roboto,
+          "Helvetica Neue", Arial, "Noto Sans", "Apple Color Emoji",
+          "Segoe UI Emoji";
+      }
+      .glass {
+        background: rgba(255, 255, 255, 0.08);
+        backdrop-filter: blur(8px);
+      }
+      .scroll-smooth::-webkit-scrollbar {
+        width: 8px;
+        height: 8px;
+      }
+      .scroll-smooth::-webkit-scrollbar-thumb {
+        background: rgba(0, 0, 0, 0.2);
+        border-radius: 8px;
+      }
+    </style>
+  </head>
+  <body
+    class="h-full bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900 text-slate-100"
+  >
+    <!-- Auth / Landing -->
+    <section
+      id="auth-screen"
+      class="min-h-screen flex items-center justify-center p-6"
+    >
+      <div class="w-full max-w-2xl glass rounded-2xl shadow-2xl p-8">
+        <div class="flex items-center gap-3 mb-6">
+          <div
+            class="h-10 w-10 rounded-xl bg-indigo-500 flex items-center justify-center font-bold"
+          >
+            DJ
+          </div>
+          <div>
+            <h1 class="text-xl font-semibold">Deteksi Judi Online</h1>
+            <p class="text-slate-300 text-sm">
+              Moderasi komentar YouTube Live secara real‑time
+            </p>
+          </div>
+        </div>
+
+        <div class="space-y-6">
+          <div class="border border-slate-700 rounded-xl p-5">
+            <h2 class="font-semibold mb-3">1) Login OAuth2</h2>
+            <p class="text-sm text-slate-300 mb-4">
+              Gunakan Google OAuth2 untuk mengakses YouTube Live Chat API.
+            </p>
+            <div class="flex flex-wrap items-center gap-3">
+              <button
+                id="btn-google"
+                class="inline-flex items-center gap-2 px-4 py-2 rounded-xl bg-white text-slate-900 font-medium hover:opacity-90 transition"
+              >
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  viewBox="0 0 48 48"
+                  class="h-5 w-5"
+                >
+                  <path
+                    fill="#FFC107"
+                    d="M43.611,20.083H42V20H24v8h11.303c-1.649,4.657-6.08,8-11.303,8c-6.627,0-12-5.373-12-12 s5.373-12,12-12c3.059,0,5.842,1.154,7.961,3.039l5.657-5.657C33.175,6.053,28.791,4,24,4C12.955,4,4,12.955,4,24 s8.955,20,20,20s20-8.955,20-20C44,22.659,43.862,21.35,43.611,20.083z"
+                  />
+                  <path
+                    fill="#FF3D00"
+                    d="M6.306,14.691l6.571,4.819C14.655,16.108,18.961,14,24,14c3.059,0,5.842,1.154,7.961,3.039l5.657-5.657 C33.175,6.053,28.791,4,24,4C16.318,4,9.656,8.337,6.306,14.691z"
+                  />
+                  <path
+                    fill="#4CAF50"
+                    d="M24,44c4.717,0,9.036-1.807,12.317-4.757l-6.012-4.982C28.262,35.188,26.211,36,24,36 c-5.202,0-9.621-3.317-11.278-7.953l-6.53,5.028C9.505,39.556,16.227,44,24,44z"
+                  />
+                  <path
+                    fill="#1976D2"
+                    d="M43.611,20.083H42V20H24v8h11.303c-0.793,2.237-2.231,4.166-4.099,5.57 c0.001-0.001,0.002-0.001,0.003-0.002l6.012,4.982C36.983,39.205,44,34,44,24C44,22.659,43.862,21.35,43.611,20.083z"
+                  />
+                </svg>
+                Login dengan Google
+              </button>
+              <span id="auth-status" class="text-sm text-slate-300"
+                >Belum login</span
+              >
+            </div>
+          </div>
+
+          <div class="border border-slate-700 rounded-xl p-5">
+            <h2 class="font-semibold mb-3">2) Masukkan Link YouTube</h2>
+            <div class="flex gap-3">
+              <input
+                id="yt-link"
+                class="flex-1 bg-slate-900/60 border border-slate-700 rounded-xl px-4 py-2 outline-none focus:ring-2 focus:ring-indigo-500"
+                placeholder="https://www.youtube.com/watch?v=..."
+              />
+              <button
+                id="btn-start"
+                class="px-4 py-2 rounded-xl bg-indigo-600 hover:bg-indigo-500 font-semibold"
+              >
+                Mulai Moderasi
+              </button>
+            </div>
+            <p class="text-xs text-slate-400 mt-2">
+              Contoh: https://www.youtube.com/watch?v=iRGumTQ65ZI
+            </p>
+          </div>
+        </div>
+
+        <div class="mt-6 flex items-center justify-between">
+          <div class="text-xs text-slate-400">
+            Versi UI: 1.0 • Mock tanpa API
+          </div>
+          <button
+            id="btn-skip"
+            class="text-sm text-slate-300 underline underline-offset-4"
+          >
+            Lewati ke Dashboard
+          </button>
+        </div>
+      </div>
+    </section>
+
+    <!-- Dashboard -->
+    <section id="dashboard" class="hidden min-h-screen">
+      <header class="sticky top-0 z-10 glass border-b border-slate-800">
+        <div
+          class="max-w-7xl mx-auto px-6 py-4 flex flex-wrap items-center gap-4"
+        >
+          <div class="flex items-center gap-2 mr-auto">
+            <div
+              class="h-8 w-8 rounded-lg bg-indigo-500 flex items-center justify-center text-sm font-bold"
+            >
+              DJ
+            </div>
+            <span class="font-semibold">Dashboard Moderasi</span>
+            <span
+              id="session-badge"
+              class="ml-2 text-xs px-2 py-0.5 rounded-full bg-emerald-500/20 text-emerald-200 border border-emerald-600/40"
+              >Live</span
+            >
+          </div>
+          <div class="flex items-center gap-3">
+            <div
+              class="text-sm text-slate-300 hidden sm:block"
+              id="current-video"
+            >
+              Video: —
+            </div>
+            <button
+              id="btn-stop"
+              class="px-3 py-2 rounded-xl bg-rose-600 hover:bg-rose-500 font-semibold"
+            >
+              Hentikan
+            </button>
+          </div>
+        </div>
+      </header>
+
+      <main
+        class="max-w-7xl mx-auto px-6 py-6 grid grid-cols-1 lg:grid-cols-3 gap-6"
+      >
+        <!-- Panel Kiri: Live Chat -->
+        <section
+          class="lg:col-span-1 glass rounded-2xl border border-slate-800 p-0 overflow-hidden"
+        >
+          <div
+            class="p-4 border-b border-slate-800 flex items-center justify-between"
+          >
+            <h3 class="font-semibold">Live Chat</h3>
+            <div class="flex items-center gap-3 text-xs">
+              <span
+                id="counter-live"
+                class="px-2 py-0.5 rounded-full bg-slate-700"
+                >0</span
+              >
+              <label class="inline-flex items-center gap-2">
+                <input
+                  id="toggle-auto"
+                  type="checkbox"
+                  class="accent-indigo-600"
+                />
+                Auto‑Moderasi
+              </label>
+            </div>
+          </div>
+          <div
+            id="list-live"
+            class="h-[60vh] overflow-auto p-4 space-y-3 scroll-smooth"
+          ></div>
+        </section>
+
+        <!-- Panel Tengah: Chat Dihapus -->
+        <section
+          class="lg:col-span-1 glass rounded-2xl border border-slate-800 p-0 overflow-hidden"
+        >
+          <div
+            class="p-4 border-b border-slate-800 flex items-center justify-between"
+          >
+            <h3 class="font-semibold">Chat Dihapus</h3>
+            <span
+              id="counter-deleted"
+              class="text-xs px-2 py-0.5 rounded-full bg-amber-600/30 border border-amber-700"
+              >0</span
+            >
+          </div>
+          <div
+            id="list-deleted"
+            class="h-[60vh] overflow-auto p-4 space-y-3 scroll-smooth"
+          ></div>
+        </section>
+
+        <!-- Panel Kanan: User Terban -->
+        <section
+          class="lg:col-span-1 glass rounded-2xl border border-slate-800 p-0 overflow-hidden"
+        >
+          <div class="p-4 border-b border-slate-800">
+            <div class="flex items-center justify-between">
+              <h3 class="font-semibold">User Terban</h3>
+              <span
+                id="counter-banned"
+                class="text-xs px-2 py-0.5 rounded-full bg-rose-600/30 border border-rose-700"
+                >0</span
+              >
+            </div>
+            <!-- Controls -->
+            <div class="mt-4 grid grid-cols-2 gap-3">
+              <div class="col-span-2">
+                <label class="text-sm text-slate-300">Durasi Ban</label>
+                <div class="flex items-center gap-3 mt-2">
+                  <input
+                    id="ban-seconds"
+                    type="range"
+                    min="10"
+                    max="86400"
+                    step="10"
+                    value="60"
+                    class="w-full"
+                  />
+                  <span id="ban-label" class="text-sm w-24 text-right"
+                    >60 dtk</span
+                  >
+                </div>
+                <div class="mt-2 flex flex-wrap gap-2 text-xs">
+                  <button
+                    data-preset="10"
+                    class="px-2 py-1 rounded bg-slate-700 hover:bg-slate-600"
+                  >
+                    10s
+                  </button>
+                  <button
+                    data-preset="60"
+                    class="px-2 py-1 rounded bg-slate-700 hover:bg-slate-600"
+                  >
+                    1m
+                  </button>
+                  <button
+                    data-preset="300"
+                    class="px-2 py-1 rounded bg-slate-700 hover:bg-slate-600"
+                  >
+                    5m
+                  </button>
+                  <button
+                    data-preset="3600"
+                    class="px-2 py-1 rounded bg-slate-700 hover:bg-slate-600"
+                  >
+                    1h
+                  </button>
+                  <button
+                    data-preset="21600"
+                    class="px-2 py-1 rounded bg-slate-700 hover:bg-slate-600"
+                  >
+                    6h
+                  </button>
+                  <button
+                    data-preset="86400"
+                    class="px-2 py-1 rounded bg-slate-700 hover:bg-slate-600"
+                  >
+                    24h
+                  </button>
+                </div>
+              </div>
+              <label class="inline-flex items-center gap-2">
+                <input
+                  id="toggle-permanent"
+                  type="checkbox"
+                  class="accent-rose-600"
+                />
+                Ban permanen
+              </label>
+              <label class="inline-flex items-center gap-2">
+                <input
+                  id="toggle-shadow"
+                  type="checkbox"
+                  class="accent-amber-600"
+                />
+                Shadow‑ban (sembunyikan)
+              </label>
+            </div>
+          </div>
+          <div
+            id="list-banned"
+            class="h-[44vh] overflow-auto p-4 space-y-3 scroll-smooth"
+          ></div>
+        </section>
+      </main>
+    </section>
+
+    <!-- Toast -->
+    <div
+      id="toast"
+      class="fixed bottom-6 left-1/2 -translate-x-1/2 px-4 py-2 rounded-xl bg-black/70 text-white text-sm hidden"
+    ></div>
+
+    <script>
+      // ======= Mock State =======
+      const state = {
+        authed: false,
+        videoUrl: "",
+        live: [],
+        deleted: [],
+        banned: [],
+        banSeconds: 60,
+        permanent: false,
+        shadow: false,
+        autoModerate: false,
+        idCounter: 1,
+      };
+
+      // ======= Helpers =======
+      const $ = (sel) => document.querySelector(sel);
+      const $$ = (sel) => Array.from(document.querySelectorAll(sel));
+      const toast = (msg) => {
+        const el = $("#toast");
+        el.textContent = msg;
+        el.classList.remove("hidden");
+        setTimeout(() => el.classList.add("hidden"), 1600);
+      };
+      const formatDuration = (s) => {
+        if (s >= 3600) return Math.round(s / 3600) + " jam";
+        if (s >= 60) return Math.round(s / 60) + " mnt";
+        return s + " dtk";
+      };
+
+      // ======= UI Bindings (Auth) =======
+      const authScreen = $("#auth-screen");
+      const dashboard = $("#dashboard");
+      const authStatus = $("#auth-status");
+      const currentVideo = $("#current-video");
+
+      $("#btn-google").addEventListener("click", () => {
+        // TODO: Integrasi OAuth2 Google sebenarnya
+        state.authed = true;
+        authStatus.textContent = "Sudah login (mock)";
+        toast("Login berhasil (mock)");
+      });
+
+      $("#btn-start").addEventListener("click", () => {
+        state.videoUrl = $("#yt-link").value.trim();
+        if (!state.authed) {
+          toast("Silakan login terlebih dahulu");
+          return;
+        }
+        if (!state.videoUrl) {
+          toast("Masukkan link YouTube terlebih dahulu");
+          return;
+        }
+        // TODO: Ambil activeLiveChatId, mulai stream, dll.
+        authScreen.classList.add("hidden");
+        dashboard.classList.remove("hidden");
+        currentVideo.textContent = "Video: " + state.videoUrl;
+        mockStartStream();
+      });
+
+      $("#btn-skip").addEventListener("click", () => {
+        authScreen.classList.add("hidden");
+        dashboard.classList.remove("hidden");
+        currentVideo.textContent = "Video: (demo)";
+        mockStartStream();
+      });
+
+      $("#btn-stop").addEventListener("click", () => {
+        stopMockStream();
+        $("#session-badge").textContent = "Berhenti";
+        $("#session-badge").className =
+          "ml-2 text-xs px-2 py-0.5 rounded-full bg-slate-600 text-slate-200 border border-slate-500";
+      });
+
+      // ======= Controls (Ban) =======
+      const banRange = $("#ban-seconds");
+      const banLabel = $("#ban-label");
+      banRange.addEventListener("input", (e) => {
+        state.banSeconds = Number(e.target.value);
+        banLabel.textContent = formatDuration(state.banSeconds);
+      });
+      $$("#dashboard [data-preset]").forEach((btn) =>
+        btn.addEventListener("click", () => {
+          const val = Number(btn.getAttribute("data-preset"));
+          state.banSeconds = val;
+          banRange.value = val;
+          banLabel.textContent = formatDuration(val);
+        })
+      );
+      $("#toggle-permanent").addEventListener(
+        "change",
+        (e) => (state.permanent = e.target.checked)
+      );
+      $("#toggle-shadow").addEventListener(
+        "change",
+        (e) => (state.shadow = e.target.checked)
+      );
+      $("#toggle-auto").addEventListener("change", (e) => {
+        state.autoModerate = e.target.checked;
+        toast("Auto‑Moderasi " + (state.autoModerate ? "aktif" : "nonaktif"));
+      });
+
+      // ======= Renderers =======
+      function renderLists() {
+        // Live
+        const liveWrap = $("#list-live");
+        liveWrap.innerHTML = "";
+        state.live.forEach((item) =>
+          liveWrap.appendChild(renderLiveItem(item))
+        );
+        $("#counter-live").textContent = state.live.length;
+
+        // Deleted
+        const delWrap = $("#list-deleted");
+        delWrap.innerHTML = "";
+        state.deleted.forEach((item) =>
+          delWrap.appendChild(renderDeletedItem(item))
+        );
+        $("#counter-deleted").textContent = state.deleted.length;
+
+        // Banned
+        const banWrap = $("#list-banned");
+        banWrap.innerHTML = "";
+        state.banned.forEach((item) =>
+          banWrap.appendChild(renderBannedItem(item))
+        );
+        $("#counter-banned").textContent = state.banned.length;
+      }
+
+      function chip(text, color) {
+        const span = document.createElement("span");
+        span.className = `text-[10px] px-2 py-0.5 rounded-full border ${color}`;
+        span.textContent = text;
+        return span;
+      }
+
+      function renderLiveItem(msg) {
+        const card = document.createElement("div");
+        card.className =
+          "rounded-xl border border-slate-800 bg-slate-900/50 p-3";
+        const top = document.createElement("div");
+        top.className = "flex items-center gap-2 mb-1";
+        const name = document.createElement("span");
+        name.className = "font-semibold text-sm";
+        name.textContent = msg.author;
+        const time = document.createElement("span");
+        time.className = "text-xs text-slate-400 ml-auto";
+        time.textContent = new Date(msg.ts).toLocaleTimeString();
+        top.append(name, time);
+
+        const body = document.createElement("p");
+        body.className = "text-sm text-slate-200";
+        body.textContent = msg.text;
+
+        const actions = document.createElement("div");
+        actions.className = "mt-2 flex flex-wrap items-center gap-2";
+        const btnDelete = document.createElement("button");
+        btnDelete.className =
+          "px-2 py-1 rounded-lg bg-amber-600/30 border border-amber-600 text-amber-100 text-xs hover:bg-amber-600/40";
+        btnDelete.textContent = "Hapus";
+        btnDelete.onclick = () => deleteMessage(msg.id);
+
+        const btnBan = document.createElement("button");
+        btnBan.className =
+          "px-2 py-1 rounded-lg bg-rose-600/40 border border-rose-600 text-rose-50 text-xs hover:bg-rose-600/50";
+        btnBan.textContent = "Ban User";
+        btnBan.onclick = () => banUser(msg.authorId, msg.author);
+
+        const badge = chip(
+          "score: " + msg.score.toFixed(2),
+          "bg-indigo-600/20 border-indigo-700 text-indigo-100"
+        );
+
+        actions.append(btnDelete, btnBan, badge);
+        card.append(top, body, actions);
+        return card;
+      }
+
+      function renderDeletedItem(item) {
+        const card = document.createElement("div");
+        card.className =
+          "rounded-xl border border-slate-800 bg-slate-900/50 p-3";
+        const head = document.createElement("div");
+        head.className = "flex items-center gap-2 mb-1";
+        head.append(
+          Object.assign(document.createElement("span"), {
+            className: "font-semibold text-sm",
+            textContent: item.author,
+          }),
+          Object.assign(document.createElement("span"), {
+            className: "text-xs text-slate-400 ml-auto",
+            textContent: new Date(item.ts).toLocaleTimeString(),
+          })
+        );
+        const body = Object.assign(document.createElement("p"), {
+          className: "text-sm text-slate-200",
+          textContent: item.text,
+        });
+        const meta = document.createElement("div");
+        meta.className = "mt-2 flex items-center gap-2 text-xs";
+        meta.append(
+          chip("dihapus", "bg-amber-600/30 border-amber-700 text-amber-100")
+        );
+        card.append(head, body, meta);
+        return card;
+      }
+
+      function renderBannedItem(user) {
+        const card = document.createElement("div");
+        card.className =
+          "rounded-xl border border-slate-800 bg-slate-900/50 p-3";
+        const row = document.createElement("div");
+        row.className = "flex items-center gap-2";
+        const name = Object.assign(document.createElement("div"), {
+          className: "font-semibold",
+          textContent: user.name,
+        });
+        const small = Object.assign(document.createElement("div"), {
+          className: "text-xs text-slate-400",
+          textContent: "ID: " + user.id,
+        });
+        const left = document.createElement("div");
+        left.append(name, small);
+        const right = document.createElement("div");
+        right.className = "ml-auto flex items-center gap-2";
+        const until = user.permanent
+          ? "permanen"
+          : "hingga " + new Date(user.until).toLocaleTimeString();
+        right.append(
+          chip(
+            until,
+            user.permanent
+              ? "bg-rose-600/30 border-rose-700 text-rose-100"
+              : "bg-slate-700 border-slate-600 text-slate-100"
+          )
+        );
+
+        const unban = document.createElement("button");
+        unban.className =
+          "px-2 py-1 rounded-lg bg-emerald-600/40 border border-emerald-600 text-emerald-50 text-xs hover:bg-emerald-600/50";
+        unban.textContent = "Unban";
+        unban.onclick = () => unbanUser(user.id);
+
+        right.append(unban);
+        row.append(left, right);
+        card.append(row);
+        return card;
+      }
+
+      // ======= Actions (Mock) =======
+      function deleteMessage(id) {
+        const idx = state.live.findIndex((m) => m.id === id);
+        if (idx >= 0) {
+          const [msg] = state.live.splice(idx, 1);
+          state.deleted.unshift(msg);
+          toast("Chat dihapus");
+          renderLists();
+          // TODO: panggil liveChatMessages.delete (jika API tersedia)
+        }
+      }
+
+      function banUser(userId, name) {
+        const entry = {
+          id: userId,
+          name,
+          permanent: state.permanent,
+          until: state.permanent ? null : Date.now() + state.banSeconds * 1000,
+          shadow: state.shadow,
+        };
+        if (!state.banned.some((b) => b.id === userId))
+          state.banned.unshift(entry);
+        // Hapus semua chat user tsb dari live list (mock)
+        state.live = state.live.filter((m) => m.authorId !== userId);
+        toast(
+          "User diban" +
+            (entry.permanent
+              ? " permanen"
+              : ` ${formatDuration(state.banSeconds)}`)
+        );
+        renderLists();
+        // TODO: panggil liveChatBans.insert / setModerationStatus
+      }
+
+      function unbanUser(userId) {
+        state.banned = state.banned.filter((b) => b.id !== userId);
+        toast("User di‑unban");
+        renderLists();
+        // TODO: hapus ban via API (tidak ada endpoint delete ban langsung untuk sementara; perlu simpan banId jika memakai bans.insert)
+      }
+
+      // Auto expire temporary bans (mock)
+      setInterval(() => {
+        const now = Date.now();
+        const before = state.banned.length;
+        state.banned = state.banned.filter(
+          (b) => b.permanent || (b.until && b.until > now)
+        );
+        if (state.banned.length !== before) renderLists();
+      }, 1000);
+
+      // ======= Mock Stream =======
+      let streamTimer = null;
+      function mockStartStream() {
+        $("#session-badge").textContent = "Live";
+        $("#session-badge").className =
+          "ml-2 text-xs px-2 py-0.5 rounded-full bg-emerald-500/20 text-emerald-200 border border-emerald-600/40";
+        // seed
+        state.live = [];
+        state.deleted = [];
+        state.banned = [];
+        renderLists();
+
+        streamTimer = setInterval(() => {
+          // generate pesan baru
+          const msg = genMockMessage();
+          // Auto‑moderasi (mock): jika score > 0.8 => hapus + opsi ban
+          if (state.autoModerate && msg.score > 0.8) {
+            state.deleted.unshift(msg);
+            if (msg.score > 0.95) banUser(msg.authorId, msg.author);
+          } else {
+            state.live.unshift(msg);
+          }
+          renderLists();
+        }, 900);
+      }
+
+      function stopMockStream() {
+        clearInterval(streamTimer);
+        streamTimer = null;
+      }
+
+      function genMockMessage() {
+        const gambleWords = [
+          "slot",
+          "scatter",
+          "gacor",
+          "maxwin",
+          "deposit",
+          "WD cepet",
+          "bonus 100%",
+          "pragmatic",
+          "akun pro",
+          "zeus",
+        ];
+        const normalWords = [
+          "halo",
+          "hadir",
+          "mantap",
+          "keren",
+          "like",
+          "subscribe",
+          "bagus",
+          "setuju",
+          "nge‑lag",
+          "audio mantap",
+        ];
+        const authorId = "UC" + (100000 + Math.floor(Math.random() * 900000));
+        const risky = Math.random() < 0.35;
+        const words = risky ? gambleWords : normalWords;
+        const text = words
+          .sort(() => Math.random() - 0.5)
+          .slice(0, 3 + Math.floor(Math.random() * 3))
+          .join(" ");
+        const score = risky ? 0.7 + Math.random() * 0.3 : Math.random() * 0.6;
+        return {
+          id: "M" + state.idCounter++,
+          ts: Date.now(),
+          author: risky
+            ? "PromoGuy" + Math.floor(Math.random() * 999)
+            : "User" + Math.floor(Math.random() * 999),
+          authorId,
+          text,
+          score,
+        };
+      }
+
+      // Init label
+      banLabel.textContent = formatDuration(state.banSeconds);
+    </script>
+  </body>
+</html>
